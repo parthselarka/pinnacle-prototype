@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S.T.A.R.C Chat UI</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="menu-icon">☰</div>
+      <div class="icons">
+        <div class="icon">+</div>
+        <div class="icon">?</div>
+        <div class="icon">⟳</div>
+        <div class="icon">⚙️</div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <div class="title">S.T.A.R.C</div>
+        <div class="grid-icon">⠿</div>
+      </div>
+
+      <!-- Message Area -->
+      <div class="messages" id="messages">
+        
+      </div>
+
+      <!-- Bottom Input Bar -->
+      <div class="bottom-bar">
+        <input type="text" id="user-input" placeholder="How Can I Help Today?">
+        <div class="icon-container">
+          <button onclick="sendMessage()" id="button-add">
+            <div class="icon">+</div>  
+          </button>
+          
+          <div class="icon">🎤</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>
