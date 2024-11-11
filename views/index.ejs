@@ -3,49 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>S.T.A.R.C Chat UI</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <title>Chatbot - S.T.A.R.C</title>
 </head>
 <body>
-  <div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="menu-icon">☰</div>
-      <div class="icons">
-        <div class="icon">+</div>
-        <div class="icon">?</div>
-        <div class="icon">⟳</div>
-        <div class="icon">⚙️</div>
-      </div>
+  <div class="main-content">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="title">S.T.A.R.C</div>
+      <div class="grid-icon">⠿</div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <!-- Top Bar -->
-      <div class="top-bar">
-        <div class="title">S.T.A.R.C</div>
-        <div class="grid-icon">⠿</div>
-      </div>
+    <!-- Message Area -->
+    <div class="messages" id="messages"></div>
 
-      <!-- Message Area -->
-      <div class="messages" id="messages">
-        
-      </div>
-
-      <!-- Bottom Input Bar -->
-      <div class="bottom-bar">
-        <input type="text" id="user-input" placeholder="How Can I Help Today?">
-        <div class="icon-container">
-          <button onclick="sendMessage()" id="button-add">
-            <div class="icon">+</div>  
-          </button>
-          
-          <div class="icon">🎤</div>
-        </div>
+    <!-- Bottom Input Bar -->
+    <div class="bottom-bar">
+      <input type="text" id="user-input" placeholder="How Can I Help Today?">
+      <div class="icon-container">
+        <button onclick="sendMessage()" id="button-add">
+          <div class="icon">+</div>  
+        </button>
+        <div class="icon">🎤</div>
       </div>
     </div>
   </div>
 
-  <script src="/js/script.js"></script>
+  <script>
+    // Function to append message to the chat log
+    function appendMessage(role, message) {
+      const messagesContainer = document.getElementById('messages');
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+      messageElement.innerHTML = `<strong>${role}:</strong> ${message}`;
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight; // Auto-scroll
+    }
+
+    // Function to handle sending message
+    async function sendMessage() {
+      const userInput = document.getElementById('user-input').value;
+      if (!userInput.trim()) return; // Prevent sending empty messages
+
+      appendMessage('You', userInput);
+
+      // Send message to the server
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userInput }),
+        });
+
+        const data = await response.json();
+        appendMessage('Bot', data.reply);
+
+        // Clear input
+        document.getElementById('user-input').value = '';
+      } catch (error) {
+        appendMessage('Bot', 'Sorry, an error occurred.');
+        console.error('Error:', error);
+      }
+    }
+
+    // Handling 'Enter' key to send message
+    document.getElementById('user-input').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
 </body>
 </html>
